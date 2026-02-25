@@ -1,0 +1,11 @@
+# robots.txt for https://openalgorithms.vercel.app/
+# Generated: 2026-02-26
+
+User-agent: *
+Allow: /
+
+# Disallow private / utility paths
+Disallow: /api/
+Disallow: /_convex/
+
+Sitemap: https://openalgorithms.vercel.app/sitemap.xml

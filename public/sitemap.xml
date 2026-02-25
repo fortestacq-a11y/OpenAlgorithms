@@ -199,13 +199,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/catboost</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/catboost</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/ann-classification</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/ann-classification</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -213,37 +213,37 @@
 
   <!-- Clustering (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/kmeans</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/kmeans</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/kmedoids</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/kmedoids</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/hierarchical-clustering</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/hierarchical-clustering</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/dbscan</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/dbscan</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/mean-shift</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/mean-shift</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/gmm</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/gmm</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -251,31 +251,31 @@
 
   <!-- Dimensionality Reduction (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/pca</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/pca</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/lda</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/lda</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/tsne</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/tsne</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/umap</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/umap</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/autoencoder</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/autoencoder</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -283,19 +283,19 @@
 
   <!-- Association Rule Learning (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/apriori</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/apriori</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/eclat</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/eclat</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/fp-growth</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/fp-growth</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -303,19 +303,19 @@
 
   <!-- Semi-Supervised Learning (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/self-training</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/self-training</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/label-propagation</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/label-propagation</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/label-spreading</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/label-spreading</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -323,37 +323,37 @@
 
   <!-- Reinforcement Learning (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/q-learning</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/q-learning</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/sarsa</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/sarsa</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/dqn</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/dqn</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/policy-gradient</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/policy-gradient</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/actor-critic</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/actor-critic</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/ppo</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/ppo</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -361,55 +361,55 @@
 
   <!-- Deep Learning (ML) -->
   <url>
-    <loc>https://openalgorithms.com/algorithms/ann</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/ann</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/cnn</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/cnn</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/rnn</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/rnn</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/lstm</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/lstm</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/gru</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/gru</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/transformer</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/transformer</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/gan</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/gan</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/vae</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/vae</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://openalgorithms.com/algorithms/diffusion-model</loc>
+    <loc>https://openalgorithms.vercel.app/algorithms/diffusion-model</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

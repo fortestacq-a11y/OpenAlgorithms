@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { ArrowRight, BarChart3, Search, Network, Moon, Sun, Brain } from "lucide-react";
+import { ArrowRight, BarChart3, Search, Network, Moon, Sun } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
 import { useState, useEffect } from "react";
@@ -84,10 +84,7 @@ export default function Landing() {
               <span>Graphs</span>
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <Link to="/algorithms/linear-regression" className="relative group py-1">
-              <span>ML / AI</span>
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
+
           </nav>
 
           <div className="flex items-center gap-4">
@@ -174,13 +171,7 @@ export default function Landing() {
                 link="/algorithms/bfs"
                 delay={0.4}
               />
-              <FeatureCard
-                icon={<Brain className="h-8 w-8" />}
-                title="Machine Learning"
-                description="Explore 60+ ML algorithms across Supervised, Unsupervised, Reinforcement, and Deep Learning."
-                link="/algorithms/linear-regression"
-                delay={0.5}
-              />
+
             </div>
           </div>
         </motion.section>
@@ -280,8 +271,7 @@ export default function Landing() {
                 <li><Link to="/algorithms/bubble-sort" className="hover:text-foreground transition-colors">Sorting</Link></li>
                 <li><Link to="/algorithms/binary-search" className="hover:text-foreground transition-colors">Searching</Link></li>
                 <li><Link to="/algorithms/bfs" className="hover:text-foreground transition-colors">Graphs</Link></li>
-                <li><Link to="/algorithms/linear-regression" className="hover:text-foreground transition-colors">ML / AI</Link></li>
-                <li><Link to="/algorithms/ann" className="hover:text-foreground transition-colors">Deep Learning</Link></li>
+
               </ul>
             </div>
 

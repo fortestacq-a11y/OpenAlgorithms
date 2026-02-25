@@ -10,14 +10,6 @@ import {
   ChevronDown,
   ChevronRight,
   Network,
-  TrendingUp,
-  Tags,
-  Layers,
-  Minimize2,
-  GitMerge,
-  GitCommit,
-  Zap,
-  Brain,
 } from "lucide-react";
 import {
   Collapsible,
@@ -110,34 +102,7 @@ export function AppSidebar() {
             <SidebarSection label="Graph" icon={<Network className="h-4 w-4 opacity-70" />} category="graph" defaultOpen={true} />
           </div>
 
-          {/* ── Supervised Learning ── */}
-          <div className="space-y-1">
-            <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
-              Supervised Learning
-            </p>
-            <SidebarSection label="Regression" icon={<TrendingUp className="h-4 w-4 opacity-70" />} category="regression" />
-            <SidebarSection label="Classification" icon={<Tags className="h-4 w-4 opacity-70" />} category="classification" />
-          </div>
 
-          {/* ── Unsupervised Learning ── */}
-          <div className="space-y-1">
-            <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
-              Unsupervised Learning
-            </p>
-            <SidebarSection label="Clustering" icon={<Layers className="h-4 w-4 opacity-70" />} category="clustering" />
-            <SidebarSection label="Dimensionality Reduction" icon={<Minimize2 className="h-4 w-4 opacity-70" />} category="dimensionality-reduction" />
-            <SidebarSection label="Association Rules" icon={<GitMerge className="h-4 w-4 opacity-70" />} category="association-rule" />
-          </div>
-
-          {/* ── Other Paradigms ── */}
-          <div className="space-y-1">
-            <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-2">
-              Other Paradigms
-            </p>
-            <SidebarSection label="Semi-Supervised" icon={<GitCommit className="h-4 w-4 opacity-70" />} category="semi-supervised" />
-            <SidebarSection label="Reinforcement Learning" icon={<Zap className="h-4 w-4 opacity-70" />} category="reinforcement-learning" />
-            <SidebarSection label="Deep Learning" icon={<Brain className="h-4 w-4 opacity-70" />} category="deep-learning" />
-          </div>
 
         </div>
       </ScrollArea>

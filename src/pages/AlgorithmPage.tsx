@@ -59,6 +59,25 @@ export default function AlgorithmPage() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // ── Dynamic SEO per algorithm page ──────────────────────────────────────
+  useEffect(() => {
+    if (!algorithm) return;
+    // Set page title
+    document.title = `${algorithm.name} - Open Algorithms`;
+    // Set meta description
+    let metaDesc = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement("meta");
+      metaDesc.name = "description";
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = `${algorithm.description} Time complexity: ${algorithm.complexity.time}. Space complexity: ${algorithm.complexity.space}. Interactive visualization on Open Algorithms.`;
+    return () => {
+      // Restore defaults when leaving
+      document.title = "Open Algorithms";
+    };
+  }, [algorithm]);
+
   const toggleTheme = () => {
     setTheme(prev => prev === "light" ? "dark" : "light");
   };

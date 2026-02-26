@@ -1,9 +1,9 @@
 import { useParams } from "react-router";
-import { AppSidebar } from "@/components/AppSidebar";
+import { AppSidebar, MobileSidebarDrawer } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { Play, Pause, RotateCcw, StepForward, Info, Moon, Sun, CheckCircle2, XCircle, Lightbulb, Clock, HardDrive } from "lucide-react";
+import { Play, Pause, RotateCcw, StepForward, Info, Moon, Sun, CheckCircle2, XCircle, Lightbulb, Clock, HardDrive, Code2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { sortingAlgorithms, searchingAlgorithms, graphAlgorithms } from "@/lib/algorithms";
 import { defaultGraph } from "@/lib/algorithms/graph";
@@ -85,13 +85,14 @@ export default function AlgorithmPage() {
   // Helper to reset data based on algorithm type
   const resetData = () => {
     if (!algorithm) return;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     if (algorithm.category === "sorting") {
-      const newArray = Array.from({ length: 24 }, () => Math.floor(Math.random() * 90) + 10);
+      const newArray = Array.from({ length: isMobile ? 14 : 24 }, () => Math.floor(Math.random() * 90) + 10);
       setArray(newArray);
       setInputStr(newArray.join(", "));
     } else if (algorithm.category === "searching") {
-      const newArray = Array.from({ length: 16 }, () => Math.floor(Math.random() * 99) + 1);
+      const newArray = Array.from({ length: isMobile ? 10 : 16 }, () => Math.floor(Math.random() * 99) + 1);
       if (algorithm.slug === "binary-search") {
         newArray.sort((a, b) => a - b);
       }
@@ -136,48 +137,57 @@ export default function AlgorithmPage() {
   return (
     <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
       <AppSidebar />
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative min-w-0">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] -z-10" />
 
-        <header className="h-20 border-b border-border/40 flex items-center px-8 justify-between bg-background/80 backdrop-blur-md z-10 sticky top-0">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-serif font-bold tracking-tight text-foreground">{algorithm.name}</h1>
-            <p className="text-sm text-muted-foreground max-w-xl line-clamp-1">{algorithm.description}</p>
+        {/* ── Header ── */}
+        <header className="border-b border-border/40 flex items-center px-4 md:px-8 justify-between bg-background/80 backdrop-blur-md z-10 sticky top-0 min-h-[56px] md:h-20 py-2 md:py-0 gap-3">
+          {/* Left: hamburger (mobile) + title */}
+          <div className="flex items-center gap-3 min-w-0">
+            <MobileSidebarDrawer />
+            <div className="min-w-0">
+              <h1 className="text-lg md:text-3xl font-serif font-bold tracking-tight text-foreground leading-tight truncate">{algorithm.name}</h1>
+              <p className="hidden sm:block text-xs md:text-sm text-muted-foreground max-w-sm md:max-w-xl line-clamp-1">{algorithm.description}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex gap-6 text-sm text-muted-foreground">
+
+          {/* Right: complexity (desktop only) + code toggle + theme */}
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <div className="hidden sm:flex gap-3 md:gap-6 text-sm text-muted-foreground">
               <div className="flex flex-col items-end">
                 <span className="text-[10px] uppercase tracking-widest opacity-60 font-semibold mb-0.5">Time</span>
-                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 hover:bg-secondary/70 transition-colors">
+                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 text-xs">
                   {algorithm.complexity.time}
                 </Badge>
               </div>
               <div className="flex flex-col items-end">
                 <span className="text-[10px] uppercase tracking-widest opacity-60 font-semibold mb-0.5">Space</span>
-                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 hover:bg-secondary/70 transition-colors">
+                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 text-xs">
                   {algorithm.complexity.space}
                 </Badge>
               </div>
             </div>
-            <div className="h-8 w-px bg-border/50" />
+            <div className="hidden sm:block h-6 w-px bg-border/50" />
+            {/* Code/Visualize toggle – icon only on mobile */}
             <Button
               variant={isCodeView ? "default" : "outline"}
               size="sm"
               onClick={() => setIsCodeView(!isCodeView)}
-              className="gap-2 rounded-full min-w-[90px]"
+              className="rounded-full px-2 sm:px-4"
+              aria-label={isCodeView ? "Visualize" : "Code"}
             >
-              <Code className="h-4 w-4" />
-              {isCodeView ? "Visualize" : "Code"}
+              <Code2 className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1.5">{isCodeView ? "Visualize" : "Code"}</span>
             </Button>
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full h-8 w-8 md:h-9 md:w-9">
+              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
           </div>
         </header>
 
-        <div className="flex-1 p-6 md:p-8 overflow-hidden flex flex-col">
-          <div className="flex-1 bg-card/50 backdrop-blur-sm border border-border/50 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+        <div className="flex-1 p-3 md:p-8 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl md:rounded-3xl shadow-sm overflow-hidden flex flex-col">
             <AnimatePresence mode="wait">
               {isCodeView ? (
                 <motion.div
@@ -347,9 +357,9 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 flex items-end justify-center p-8 gap-1.5 relative overflow-hidden">
-        <div className="absolute top-6 left-6 flex items-center gap-2">
-          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm">Visualization</Badge>
+      <div className="flex-1 flex items-end justify-center px-3 md:p-8 gap-0.5 md:gap-1.5 relative overflow-hidden">
+        <div className="absolute top-3 md:top-6 left-3 md:left-6 flex items-center gap-2">
+          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm text-xs">Visualization</Badge>
         </div>
         <AnimatePresence>
           {array.map((value, idx) => (
@@ -369,36 +379,38 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
                 opacity: sortedIndices.includes(idx) ? 1 : 0.7
               }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="w-full max-w-[32px] rounded-t-md shadow-sm"
+              className="w-full max-w-[16px] md:max-w-[32px] rounded-t-sm md:rounded-t-md shadow-sm"
             >
-              <div className="hidden sm:block text-[10px] text-center -mt-5 font-mono font-bold text-background/80 mix-blend-difference">{value}</div>
+              <div className="hidden md:block text-[10px] text-center -mt-5 font-mono font-bold text-background/80 mix-blend-difference">{value}</div>
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
 
-      <div className="bg-background/50 border-t border-border/50 p-6 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="flex items-center gap-2 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+      {/* Controls panel */}
+      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+        <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            {/* Playback + speed row */}
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-12 w-12"
+                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
+                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1.5 min-w-[140px]">
-                <div className="flex justify-between text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -413,24 +425,25 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
               </div>
             </div>
 
-            <div className="flex-1 w-full md:w-auto flex items-center gap-4 bg-secondary/30 p-3 rounded-xl border border-border/50">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <Info className="h-4 w-4" />
+            {/* Step description */}
+            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
+              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-2">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
+                <span className="text-foreground font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Input Data</span>
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Input</span>
             <Input
               value={inputStr}
               onChange={handleInputChange}
               placeholder="10, 20, 5, 3..."
-              className="font-mono text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+              className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
             />
           </div>
         </div>
@@ -538,20 +551,20 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 flex flex-col items-center justify-center p-8 relative overflow-hidden">
-        <div className="absolute top-6 left-6 flex items-center gap-2">
-          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm">Memory View</Badge>
+      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 relative overflow-hidden">
+        <div className="absolute top-3 md:top-6 left-3 md:left-6 flex items-center gap-2">
+          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm text-xs">Memory View</Badge>
         </div>
 
-        <div className="w-full max-w-4xl space-y-12">
-          <div className="flex flex-col items-center gap-4">
-            <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Target Value</div>
-            <div className="text-6xl font-serif font-bold px-8 py-4 rounded-2xl bg-accent/10 border-2 border-accent text-accent animate-in zoom-in duration-500 shadow-lg">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-6 md:gap-12">
+          <div className="flex flex-col items-center gap-2 md:gap-4">
+            <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground">Target Value</div>
+            <div className="text-4xl md:text-6xl font-serif font-bold px-5 md:px-8 py-3 md:py-4 rounded-2xl bg-accent/10 border-2 border-accent text-accent animate-in zoom-in duration-500 shadow-lg">
               {target}
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-1.5 md:gap-2">
             {array.map((value, idx) => (
               <motion.div
                 key={idx}
@@ -561,48 +574,49 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
                   scale: activeIndices.includes(idx) || foundIndex === idx ? 1.1 : 1,
                   opacity: 1,
                   backgroundColor: foundIndex === idx
-                    ? "oklch(0.6 0.15 145)" // Green when found
+                    ? "oklch(0.6 0.15 145)"
                     : activeIndices.includes(idx)
-                      ? "oklch(0.5 0.2 250)" // Blue when examining
-                      : "var(--secondary)", // Default background
+                      ? "oklch(0.5 0.2 250)"
+                      : "var(--secondary)",
                   color: foundIndex === idx || activeIndices.includes(idx)
-                    ? "oklch(0.99 0.01 240)" // White text for found/examined
+                    ? "oklch(0.99 0.01 240)"
                     : "var(--foreground)",
                   borderColor: activeIndices.includes(idx) ? "oklch(0.5 0.2 250)" : "var(--border)",
                   borderWidth: activeIndices.includes(idx) ? "2px" : "1px"
                 }}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-lg font-bold font-mono shadow-sm border transition-colors relative group cursor-default"
+                className="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg md:rounded-xl flex items-center justify-center text-sm md:text-lg font-bold font-mono shadow-sm border transition-colors relative group cursor-default"
               >
                 {value}
-                <div className="absolute -bottom-6 text-[10px] text-muted-foreground font-sans opacity-0 group-hover:opacity-100 transition-opacity">{idx}</div>
+                <div className="absolute -bottom-5 text-[9px] text-muted-foreground font-sans opacity-0 group-hover:opacity-100 transition-opacity">{idx}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-background/50 border-t border-border/50 p-6 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="flex items-center gap-2 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+      {/* Controls */}
+      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+        <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-12 w-12"
+                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
+                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1.5 min-w-[140px]">
-                <div className="flex justify-between text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -617,34 +631,34 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
               </div>
             </div>
 
-            <div className="flex-1 w-full md:w-auto flex items-center gap-4 bg-secondary/30 p-3 rounded-xl border border-border/50">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <Info className="h-4 w-4" />
+            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
+              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-2">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
+                <span className="text-foreground font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-20">Array</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-14">Array</span>
               <Input
                 value={inputStr}
                 onChange={handleInputChange}
-                placeholder="10, 20, 5, 3..."
-                className="font-mono text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+                placeholder="10, 20, 5..."
+                className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
               />
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-20">Target</span>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-14">Target</span>
               <Input
                 type="number"
                 value={target}
                 onChange={(e) => setTarget(parseInt(e.target.value))}
-                className="font-mono text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+                className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
               />
             </div>
           </div>
@@ -755,12 +769,12 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-1 flex items-center justify-center p-8 relative overflow-hidden">
-        <div className="absolute top-6 left-6 flex items-center gap-2">
-          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm">Graph Topology</Badge>
+      <div className="flex-1 flex items-center justify-center p-3 md:p-8 relative overflow-hidden">
+        <div className="absolute top-3 md:top-6 left-3 md:left-6 flex items-center gap-2">
+          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm text-xs">Graph Topology</Badge>
         </div>
 
-        <div className="relative w-full h-full max-w-2xl max-h-[500px]">
+        <div className="relative w-full h-full max-w-2xl max-h-[260px] md:max-h-[500px]">
           {/* Edges */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none">
             {graph.map((neighbors, fromNode) =>
@@ -810,7 +824,7 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
                       : "var(--border)",
                 borderStyle: queueNodes.includes(idx) && !visitedNodes.includes(idx) ? "dashed" : "solid"
               }}
-              className="absolute w-16 h-16 -ml-8 -mt-8 rounded-full flex items-center justify-center font-bold border-2 z-10 shadow-lg transition-all duration-300 font-mono text-xl cursor-pointer hover:scale-110"
+              className="absolute w-10 h-10 md:w-16 md:h-16 -ml-5 -mt-5 md:-ml-8 md:-mt-8 rounded-full flex items-center justify-center font-bold border-2 z-10 shadow-lg transition-all duration-300 font-mono text-sm md:text-xl cursor-pointer hover:scale-110"
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
             >
               {idx}
@@ -825,28 +839,28 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
         </div>
       </div>
 
-      <div className="bg-background/50 border-t border-border/50 p-6 backdrop-blur-md">
-        <div className="max-w-5xl mx-auto flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="flex items-center gap-2 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+        <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-12 w-12"
+                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
-                  {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
+                  {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-10 w-10">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1.5 min-w-[140px]">
-                <div className="flex justify-between text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -861,12 +875,12 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
               </div>
             </div>
 
-            <div className="flex-1 w-full md:w-auto flex items-center gap-4 bg-secondary/30 p-3 rounded-xl border border-border/50">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <Info className="h-4 w-4" />
+            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
+              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-2">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
+                <span className="text-foreground font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>

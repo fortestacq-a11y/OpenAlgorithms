@@ -4,13 +4,13 @@
   <!-- Core Pages -->
   <url>
     <loc>https://openalgorithms.vercel.app/</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/auth</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -18,31 +18,31 @@
   <!-- Sorting Algorithms -->
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/bubble-sort</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/selection-sort</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/insertion-sort</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/quick-sort</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/merge-sort</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -50,13 +50,13 @@
   <!-- Searching Algorithms -->
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/linear-search</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/binary-search</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -64,13 +64,13 @@
   <!-- Graph Algorithms -->
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/bfs</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://openalgorithms.vercel.app/algorithms/dfs</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

@@ -1,14 +1,15 @@
 import { Toaster } from "@/components/ui/sonner";
-import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
-import { InstrumentationProvider } from "@/instrumentation.tsx";
+import { AuthProvider } from "@/contexts/AuthContext.tsx";
+import { ThemeProvider } from "@/components/theme-provider";
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
 import Landing from "./pages/Landing.tsx";
 import AlgorithmPage from "./pages/AlgorithmPage.tsx";
+import Auth from "./pages/Auth.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import "./types/global.d.ts";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
 function RouteSyncer() {
   const location = useLocation();
@@ -35,17 +36,19 @@ function RouteSyncer() {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <VlyToolbar />
-    <InstrumentationProvider>
-      <BrowserRouter>
-        <RouteSyncer />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/algorithms/:slug" element={<AlgorithmPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster />
-    </InstrumentationProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <AuthProvider>
+        <BrowserRouter>
+          <RouteSyncer />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/algorithms/:slug" element={<ProtectedRoute><AlgorithmPage /></ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster />
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 );

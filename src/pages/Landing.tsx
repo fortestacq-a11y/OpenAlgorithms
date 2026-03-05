@@ -1,56 +1,39 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { ArrowRight, BarChart3, Search, Network, Moon, Sun } from "lucide-react";
+import { ArrowRight, BarChart3, Search, Network } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
-import { useState, useEffect } from "react";
+import { LogoDropdown } from "@/components/LogoDropdown";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Landing() {
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "light" | "dark") || "dark";
-    }
-    return "dark";
-  });
+  const { user } = useAuth();
   const { scrollY } = useScroll();
 
   // Parallax transforms
-  const heroTextY = useTransform(scrollY, [0, 500], [0, 150]); // Move text down slower
-  const heroButtonsY = useTransform(scrollY, [0, 500], [0, -50]); // Move buttons up slightly to separate
-  const backgroundShape1Y = useTransform(scrollY, [0, 1000], [0, 300]); // Background shape parallax
-  const backgroundShape2Y = useTransform(scrollY, [0, 1000], [0, -200]); // Background shape parallax
+  const heroTextY = useTransform(scrollY, [0, 500], [0, 150]);
+  const heroButtonsY = useTransform(scrollY, [0, 500], [0, -50]);
+  const backgroundShape1Y = useTransform(scrollY, [0, 1000], [0, 300]);
+  const backgroundShape2Y = useTransform(scrollY, [0, 1000], [0, -200]);
 
-  // Navbar animation logic - Made faster by reducing scroll range from 100 to 50
-  const navWidth = useSpring(useTransform(scrollY, [0, 50], ["100%", "80%"]), { stiffness: 100, damping: 20 });
-  const navTop = useSpring(useTransform(scrollY, [0, 50], ["0px", "20px"]), { stiffness: 100, damping: 20 });
-  const navRadius = useSpring(useTransform(scrollY, [0, 50], ["0px", "100px"]), { stiffness: 100, damping: 20 });
-  const navBorder = useTransform(scrollY, [0, 50], ["rgba(0,0,0,0)", "var(--border)"]);
-  const navBackdrop = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(12px)"]);
-  const navBackground = useTransform(scrollY, [0, 50], ["rgba(0,0,0,0)", "var(--background)"]);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === "light" ? "dark" : "light");
-  };
+  // Navbar animation logic
+  const navWidth = useSpring(useTransform(scrollY, [0, 50], ["100%", "95%"]), { stiffness: 400, damping: 30 });
+  const navTop = useSpring(useTransform(scrollY, [0, 50], ["0px", "16px"]), { stiffness: 400, damping: 30 });
+  const navRadius = useSpring(useTransform(scrollY, [0, 50], ["0px", "50px"]), { stiffness: 400, damping: 30 });
+  const navBorder = useTransform(scrollY, [0, 50], ["transparent", "rgba(255, 255, 255, 0.3)"]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-x-hidden transition-colors duration-500">
-      <LiquidEffectAnimation theme={theme} />
+      <LiquidEffectAnimation theme="light" />
 
       {/* Parallax Background Shapes */}
       <motion.div
-        style={{ y: backgroundShape1Y, opacity: 0.1 }}
+        style={{ y: backgroundShape1Y, opacity: 0.15 }}
         className="absolute top-20 left-10 w-64 h-64 bg-primary rounded-full blur-3xl -z-10"
       />
       <motion.div
-        style={{ y: backgroundShape2Y, opacity: 0.1 }}
-        className="absolute top-96 right-10 w-96 h-96 bg-accent rounded-full blur-3xl -z-10"
+        style={{ y: backgroundShape2Y, opacity: 0.15 }}
+        className="absolute top-96 right-10 w-96 h-96 bg-primary rounded-full blur-3xl -z-10"
       />
 
       {/* Animated Navbar */}
@@ -60,42 +43,38 @@ export default function Landing() {
           top: navTop,
           borderRadius: navRadius,
           borderColor: navBorder,
-          backdropFilter: navBackdrop,
-          backgroundColor: navBackground
         }}
-        className="fixed left-1/2 -translate-x-1/2 z-50 border border-transparent transition-all duration-300"
+        className="fixed left-1/2 -translate-x-1/2 z-50 border glass-mist max-w-6xl shadow-sm overflow-hidden"
       >
-        <div className="container flex h-16 items-center justify-between px-6 md:px-8 mx-auto">
-          <div className="flex items-center gap-2 font-bold text-xl">
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/bcd7fca8-acbb-499c-8dac-8531f807a2bf" alt="OA Logo" className="h-8 w-8 rounded-lg object-cover" />
-            <span className="font-serif tracking-tight hidden sm:inline-block">Open Algorithms</span>
+        <div className="container flex h-16 items-center justify-between px-3 md:px-8 mx-auto">
+          <div className="flex items-center font-bold">
+            <span className="font-display tracking-tight text-primary text-lg md:text-2xl">
+              <span className="hidden sm:inline">Open Algorithms</span>
+              <span className="sm:inline hidden absolute text-transparent">OA</span> {/* Accessible hide */}
+              <span className="sm:hidden" aria-hidden="true">OA</span>
+            </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-base font-medium">
-            <Link to="/algorithms/bubble-sort" className="relative group py-1">
-              <span>Sorting</span>
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link to="/algorithms/binary-search" className="relative group py-1">
-              <span>Searching</span>
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link to="/algorithms/bfs" className="relative group py-1">
-              <span>Graphs</span>
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-
+          <nav className="flex items-center gap-3 sm:gap-8 text-xs sm:text-base font-medium">
+            <Link to="/algorithms/bubble-sort" className="text-primary/80 hover:text-primary transition-colors">Sorting</Link>
+            <Link to="/algorithms/binary-search" className="text-primary/80 hover:text-primary transition-colors">Searching</Link>
+            <Link to="/algorithms/bfs" className="text-primary/80 hover:text-primary transition-colors">Graphs</Link>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-              {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-            </Button>
+          <div className="flex items-center gap-2 sm:gap-3">
+            {!user && (
+              <Link to="/auth" className="hidden md:block">
+                <Button size="sm" className="neumorphic-button text-primary font-semibold hover:bg-transparent">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            <LogoDropdown />
           </div>
         </div>
       </motion.header>
 
-      <main className="flex-1 pt-16">
+      <main className="flex-1 pt-24 md:pt-16">
         {/* Hero Section */}
         <section className="min-h-[90vh] flex flex-col items-center justify-center px-4 md:px-8 text-center space-y-8 max-w-5xl mx-auto relative z-10">
           <motion.div
@@ -105,16 +84,15 @@ export default function Landing() {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6"
           >
-
-            <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[1.1]">
-              Visualize the <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent italic font-serif">
-                Invisible Logic
+            <h1 className="text-5xl md:text-8xl font-bold tracking-tight leading-[1.1] text-primary">
+              Watch Code <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-mist italic font-display">
+                Come Alive
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Master data structures and algorithms through interactive, step-by-step visualizations. Designed for clarity. Built for understanding.
+            <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-body">
+              Transform abstract concepts into crystal-clear visual journeys. Dive into the mechanics of algorithms with interactive, real-time control. Master logic, one visual step at a time.
             </p>
           </motion.div>
 
@@ -126,8 +104,8 @@ export default function Landing() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
             <Link to="/algorithms/bubble-sort">
-              <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 bg-primary text-primary-foreground hover:bg-primary/90">
-                Start Visualizing <ArrowRight className="ml-2 h-5 w-5" />
+              <Button size="lg" className="h-14 px-8 text-lg btn-primary-slate">
+                Launch Visualizer <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </motion.div>
@@ -139,39 +117,38 @@ export default function Landing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="py-32 bg-secondary/30 border-y border-border/50 backdrop-blur-sm relative z-20"
+          className="py-32 relative z-20"
         >
           <div className="container px-4 md:px-8 mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">Explore Categories</h2>
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-primary">Unleash Core Concepts</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Dive deep into the core concepts of computer science with our comprehensive suite of visualizers.
+                Equip yourself with the fundamental building blocks of modern software. Explore our curated interactive playgrounds designed for rapid technical mastery.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <FeatureCard
-                icon={<BarChart3 className="h-8 w-8" />}
+                icon={<BarChart3 className="h-8 w-8 text-primary" />}
                 title="Sorting"
-                description="Visualize Bubble, Merge, Quick sort and more. Understand how data is organized step-by-step."
+                description="Watch chaos turn into order. Dissect the inner workings of Bubble, Merge, and Quick sort through high-fidelity animations."
                 link="/algorithms/bubble-sort"
                 delay={0.2}
               />
               <FeatureCard
-                icon={<Search className="h-8 w-8" />}
+                icon={<Search className="h-8 w-8 text-primary" />}
                 title="Searching"
-                description="See how Linear and Binary search traverse data structures to find what you need efficiently."
+                description="Navigate the noise. Experience how intelligent algorithms relentlessly hunt down targets using optimal search methodologies."
                 link="/algorithms/linear-search"
                 delay={0.3}
               />
               <FeatureCard
-                icon={<Network className="h-8 w-8" />}
+                icon={<Network className="h-8 w-8 text-primary" />}
                 title="Graph Traversal"
-                description="Explore BFS and DFS traversals on interactive graphs. Watch nodes connect and explore."
+                description="Map the unknown. Witness nodes connect and networks unfold in real-time as you command deep and broad traversal engines."
                 link="/algorithms/bfs"
                 delay={0.4}
               />
-
             </div>
           </div>
         </motion.section>
@@ -186,41 +163,40 @@ export default function Landing() {
         >
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="flex-1 space-y-8">
-              <h2 className="text-3xl md:text-5xl font-bold">How It Works</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-primary">Your Path to Mastery</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Our platform breaks down complex algorithms into digestible steps. You don't just watch; you interact, control, and understand the underlying logic.
+                We engineered an environment that strips away complexity. You aren't just a spectator; you dictate the pace, manipulate the inputs, and directly observe the mechanical elegance of computation.
               </p>
 
               <div className="space-y-6">
                 <StepItem
                   number="01"
-                  title="Select an Algorithm"
-                  description="Choose from our extensive library of sorting, searching, and graph algorithms."
+                  title="Isolate the Mechanism"
+                  description="Handpick from an elite arsenal of industry-standard sorting, searching, and graph-traversal architectures."
                 />
                 <StepItem
                   number="02"
-                  title="Input Your Data"
-                  description="Use default datasets or input your own custom values to see how the algorithm handles edge cases."
+                  title="Inject the Payload"
+                  description="Deploy curated datasets or inject your own extreme edge cases to push the algorithm's boundaries to the absolute limit."
                 />
                 <StepItem
                   number="03"
-                  title="Control the Flow"
-                  description="Play, pause, step forward, and adjust speed to learn at your own pace."
+                  title="Take Command"
+                  description="Dictate the timeline. Play, pause, micro-step, and accelerate execution speed to forge profound neurological connections."
                 />
               </div>
             </div>
-            <div className="flex-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent rounded-3xl blur-3xl -z-10" />
+            <div className="flex-1 relative w-full mt-12 md:mt-0">
               <motion.div
                 style={{ y: useTransform(scrollY, [0, 1500], [0, 100]) }}
-                className="bg-card border border-border rounded-3xl p-8 shadow-2xl"
+                className="neumorphic-card p-8 w-full max-w-md mx-auto aspect-square flex flex-col justify-between"
               >
                 <div className="space-y-4">
-                  <div className="h-8 w-3/4 bg-secondary rounded animate-pulse" />
-                  <div className="h-32 bg-secondary/50 rounded animate-pulse" />
+                  <div className="h-8 w-3/4 neumorphic-inset rounded-full" />
+                  <div className="h-32 neumorphic-inset rounded-2xl" />
                   <div className="flex gap-4">
-                    <div className="h-10 w-24 bg-primary/20 rounded animate-pulse" />
-                    <div className="h-10 w-10 bg-secondary rounded animate-pulse" />
+                    <div className="h-10 w-24 neumorphic-inset rounded-full" />
+                    <div className="h-10 w-10 neumorphic-inset rounded-full" />
                   </div>
                 </div>
               </motion.div>
@@ -236,15 +212,15 @@ export default function Landing() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="py-32 container px-4 md:px-8 mx-auto text-center"
         >
-          <div className="max-w-3xl mx-auto space-y-8">
-            <h2 className="text-4xl md:text-6xl font-bold">Ready to Master Algorithms?</h2>
+          <div className="max-w-3xl mx-auto space-y-8 neumorphic-card p-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary">Ready to Think Like a Machine?</h2>
             <p className="text-xl text-muted-foreground">
-              Join thousands of developers who use Open Algorithms to visualize and understand complex logic.
+              Join the elite tier of developers leveraging Open Algorithms to dissect, understand, and dominate intricate computational paradigms.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link to="/algorithms/bubble-sort">
-                <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/20 transition-all">
-                  Get Started Now
+                <Button size="lg" className="h-14 px-10 text-lg btn-primary-slate">
+                  Initialize System
                 </Button>
               </Link>
             </div>
@@ -254,46 +230,8 @@ export default function Landing() {
 
       <footer className="py-12 border-t border-border bg-background">
         <div className="container px-4 md:px-8 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 font-bold text-xl">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/bcd7fca8-acbb-499c-8dac-8531f807a2bf" alt="OA Logo" className="h-8 w-8 rounded-lg object-cover" />
-                <span className="font-serif">Open Algorithms</span>
-              </div>
-              <p className="text-muted-foreground text-sm">
-                Visualizing the invisible logic of computer science.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/algorithms/bubble-sort" className="hover:text-foreground transition-colors">Sorting</Link></li>
-                <li><Link to="/algorithms/binary-search" className="hover:text-foreground transition-colors">Searching</Link></li>
-                <li><Link to="/algorithms/bfs" className="hover:text-foreground transition-colors">Graphs</Link></li>
-
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="#" className="hover:text-foreground transition-colors">Documentation</Link></li>
-                <li><Link to="#" className="hover:text-foreground transition-colors">API</Link></li>
-                <li><Link to="#" className="hover:text-foreground transition-colors">Community</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="#" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
-                <li><Link to="#" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <span className="font-display font-bold text-xl text-primary">Open Algorithms</span>
             <p className="text-sm text-muted-foreground">
               © 2025 Open Algorithms. All rights reserved.
             </p>
@@ -312,16 +250,16 @@ function FeatureCard({ icon, title, description, link, delay }: { icon: React.Re
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay, duration: 0.5 }}
-        className="bg-card border border-border p-8 rounded-3xl transition-all duration-300 hover:shadow-xl hover:border-primary/20 h-full flex flex-col"
+        className="neumorphic-card p-8 h-full flex flex-col hover:scale-[1.02] active:scale-95"
       >
-        <div className="mb-6 p-4 bg-secondary rounded-2xl w-fit group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+        <div className="mb-6 p-4 neumorphic-inset rounded-full w-fit">
           {icon}
         </div>
-        <h3 className="text-2xl font-bold mb-3 font-serif">{title}</h3>
-        <p className="text-muted-foreground leading-relaxed flex-1">
+        <h3 className="text-2xl font-bold mb-3 font-display text-primary">{title}</h3>
+        <p className="text-muted-foreground leading-relaxed flex-1 font-body">
           {description}
         </p>
-        <div className="mt-6 flex items-center text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 duration-300">
+        <div className="mt-6 flex items-center text-primary font-bold opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-[-10px] group-hover:translate-x-0 duration-300">
           Explore <ArrowRight className="ml-2 h-4 w-4" />
         </div>
       </motion.div>
@@ -331,11 +269,13 @@ function FeatureCard({ icon, title, description, link, delay }: { icon: React.Re
 
 function StepItem({ number, title, description }: { number: string, title: string, description: string }) {
   return (
-    <div className="flex gap-6">
-      <div className="font-serif text-4xl font-bold text-primary/20">{number}</div>
-      <div>
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
+    <div className="flex gap-6 items-start">
+      <div className="neumorphic-inset w-16 h-16 rounded-full flex items-center justify-center shrink-0">
+        <span className="font-display text-xl font-bold text-primary">{number}</span>
+      </div>
+      <div className="pt-2">
+        <h3 className="text-xl font-bold mb-2 text-primary">{title}</h3>
+        <p className="text-muted-foreground font-body">{description}</p>
       </div>
     </div>
   );

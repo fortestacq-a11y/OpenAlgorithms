@@ -137,57 +137,56 @@ export default function AlgorithmPage() {
   return (
     <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
       <AppSidebar />
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative min-w-0">
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative min-w-0 font-body">
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] -z-10" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
         {/* ── Header ── */}
-        <header className="border-b border-border/40 flex items-center px-4 md:px-8 justify-between bg-background/80 backdrop-blur-md z-10 sticky top-0 min-h-[56px] md:h-20 py-2 md:py-0 gap-3">
+        <header className="border-b border-border/20 flex items-center px-4 md:px-8 justify-between glass-mist z-10 sticky top-0 min-h-[56px] md:h-20 py-2 md:py-0 gap-3">
           {/* Left: hamburger (mobile) + title */}
           <div className="flex items-center gap-3 min-w-0">
             <MobileSidebarDrawer />
             <div className="min-w-0">
-              <h1 className="text-lg md:text-3xl font-serif font-bold tracking-tight text-foreground leading-tight truncate">{algorithm.name}</h1>
+              <h1 className="text-lg md:text-3xl font-display font-bold tracking-tight text-primary leading-tight truncate">{algorithm.name}</h1>
               <p className="hidden sm:block text-xs md:text-sm text-muted-foreground max-w-sm md:max-w-xl line-clamp-1">{algorithm.description}</p>
             </div>
           </div>
 
           {/* Right: complexity (desktop only) + code toggle + theme */}
           <div className="flex items-center gap-2 md:gap-4 shrink-0">
-            <div className="hidden sm:flex gap-3 md:gap-6 text-sm text-muted-foreground">
+            <div className="hidden sm:flex gap-3 md:gap-6 text-sm text-muted-foreground border-r border-border/20 pr-4">
               <div className="flex flex-col items-end">
                 <span className="text-[10px] uppercase tracking-widest opacity-60 font-semibold mb-0.5">Time</span>
-                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 text-xs">
+                <Badge variant="secondary" className="font-mono font-bold text-primary bg-primary/10 border-0 text-xs shadow-none">
                   {algorithm.complexity.time}
                 </Badge>
               </div>
               <div className="flex flex-col items-end">
                 <span className="text-[10px] uppercase tracking-widest opacity-60 font-semibold mb-0.5">Space</span>
-                <Badge variant="secondary" className="font-mono font-bold text-foreground bg-secondary/50 text-xs">
+                <Badge variant="secondary" className="font-mono font-bold text-primary bg-primary/10 border-0 text-xs shadow-none">
                   {algorithm.complexity.space}
                 </Badge>
               </div>
             </div>
-            <div className="hidden sm:block h-6 w-px bg-border/50" />
             {/* Code/Visualize toggle – icon only on mobile */}
             <Button
               variant={isCodeView ? "default" : "outline"}
               size="sm"
               onClick={() => setIsCodeView(!isCodeView)}
-              className="rounded-full px-2 sm:px-4"
+              className={`rounded-full px-2 sm:px-4 ${isCodeView ? 'btn-primary-slate' : 'neumorphic-button border-0 hover:bg-transparent'}`}
               aria-label={isCodeView ? "Visualize" : "Code"}
             >
               <Code2 className="h-4 w-4" />
               <span className="hidden sm:inline ml-1.5">{isCodeView ? "Visualize" : "Code"}</span>
             </Button>
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full h-8 w-8 md:h-9 md:w-9">
-              {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full h-8 w-8 md:h-9 md:w-9 hover:bg-transparent neumorphic-button border-0">
+              {theme === "light" ? <Moon className="h-4 w-4 text-primary" /> : <Sun className="h-4 w-4 text-primary" />}
             </Button>
           </div>
         </header>
 
         <div className="flex-1 p-3 md:p-8 overflow-hidden flex flex-col">
-          <div className="flex-1 bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl md:rounded-3xl shadow-sm overflow-hidden flex flex-col">
+          <div className="flex-1 neumorphic-card border-none rounded-2xl md:rounded-3xl overflow-hidden flex flex-col p-1 sm:p-2">
             <AnimatePresence mode="wait">
               {isCodeView ? (
                 <motion.div
@@ -388,29 +387,29 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
       </div>
 
       {/* Controls panel */}
-      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+      <div className="bg-transparent border-t border-border/10 p-3 md:p-6 backdrop-blur-md">
         <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             {/* Playback + speed row */}
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+              <div className="flex items-center gap-1.5 neumorphic-inset p-1.5 rounded-full border-0">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
+                  className="rounded-full btn-primary-slate shadow-md h-10 w-10 text-primary-foreground"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80 disabled:opacity-50">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
-                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px] px-2">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-primary">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -426,24 +425,24 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
             </div>
 
             {/* Step description */}
-            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
-              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <div className="flex-1 flex items-center gap-3 neumorphic-inset p-2.5 md:p-3 rounded-xl border-0 min-w-0">
+              <div className="h-7 w-7 rounded-lg neumorphic-card flex items-center justify-center text-primary shrink-0 border-0">
                 <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-1.5">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-primary/80 truncate">
+                <span className="text-primary font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap">Input</span>
+          <div className="flex items-center gap-3 px-1">
+            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary whitespace-nowrap">Input</span>
             <Input
               value={inputStr}
               onChange={handleInputChange}
               placeholder="10, 20, 5, 3..."
-              className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+              className="font-mono text-xs md:text-sm rounded-lg neumorphic-inset border-transparent focus:border-primary/30 transition-all font-bold shadow-none h-11"
             />
           </div>
         </div>
@@ -553,13 +552,13 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
     <div className="flex flex-col h-full">
       <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 relative overflow-hidden">
         <div className="absolute top-3 md:top-6 left-3 md:left-6 flex items-center gap-2">
-          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm text-xs">Memory View</Badge>
+          <Badge variant="outline" className="neumorphic-inset backdrop-blur-sm text-xs border-0 text-primary">Memory View</Badge>
         </div>
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-6 md:gap-12">
           <div className="flex flex-col items-center gap-2 md:gap-4">
-            <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground">Target Value</div>
-            <div className="text-4xl md:text-6xl font-serif font-bold px-5 md:px-8 py-3 md:py-4 rounded-2xl bg-accent/10 border-2 border-accent text-accent animate-in zoom-in duration-500 shadow-lg">
+            <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-primary/80">Target Value</div>
+            <div className="text-4xl md:text-6xl font-display font-bold px-5 md:px-8 py-3 md:py-4 rounded-2xl neumorphic-card text-primary animate-in zoom-in duration-500 border-0">
               {target}
             </div>
           </div>
@@ -595,28 +594,28 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
       </div>
 
       {/* Controls */}
-      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+      <div className="bg-transparent border-t border-border/10 p-3 md:p-6 backdrop-blur-md">
         <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+              <div className="flex items-center gap-1.5 neumorphic-inset p-1.5 rounded-full border-0">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
+                  className="rounded-full btn-primary-slate shadow-md h-10 w-10 text-primary-foreground"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80 disabled:opacity-50">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
-                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px] px-2">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-primary">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -631,34 +630,34 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
               </div>
             </div>
 
-            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
-              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <div className="flex-1 flex items-center gap-3 neumorphic-inset p-2.5 md:p-3 rounded-xl border-0 min-w-0">
+              <div className="h-7 w-7 rounded-lg neumorphic-card flex items-center justify-center text-primary shrink-0 border-0">
                 <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-1.5">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-primary/80 truncate">
+                <span className="text-primary font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 px-1">
             <div className="flex items-center gap-3">
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-14">Array</span>
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary whitespace-nowrap w-14">Array</span>
               <Input
                 value={inputStr}
                 onChange={handleInputChange}
                 placeholder="10, 20, 5..."
-                className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+                className="font-mono text-xs md:text-sm rounded-lg neumorphic-inset border-transparent focus:border-primary/30 transition-all font-bold shadow-none h-11"
               />
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground whitespace-nowrap w-14">Target</span>
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-primary whitespace-nowrap w-14">Target</span>
               <Input
                 type="number"
                 value={target}
                 onChange={(e) => setTarget(parseInt(e.target.value))}
-                className="font-mono text-xs md:text-sm rounded-lg border-border/50 bg-background/50 focus:bg-background transition-all"
+                className="font-mono text-xs md:text-sm rounded-lg neumorphic-inset border-transparent focus:border-primary/30 transition-all font-bold shadow-none h-11"
               />
             </div>
           </div>
@@ -839,28 +838,28 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
         </div>
       </div>
 
-      <div className="bg-background/50 border-t border-border/50 p-3 md:p-6 backdrop-blur-md">
+      <div className="bg-transparent border-t border-border/10 p-3 md:p-6 backdrop-blur-md z-20">
         <div className="max-w-5xl mx-auto flex flex-col gap-3 md:gap-6">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <div className="flex items-center gap-1.5 bg-secondary/50 p-1 rounded-full border border-border/50">
-                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+              <div className="flex items-center gap-1.5 neumorphic-inset p-1.5 rounded-full border-0">
+                <Button variant="ghost" size="icon" onClick={fullReset} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80">
                   <RotateCcw className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-md h-10 w-10"
+                  className="rounded-full btn-primary-slate shadow-md h-10 w-10 text-primary-foreground"
                   onClick={() => setIsPlaying(!isPlaying)}
                 >
                   {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full hover:bg-background hover:shadow-sm transition-all h-9 w-9">
+                <Button variant="ghost" size="icon" onClick={step} disabled={isPlaying} className="rounded-full neumorphic-button border-0 h-9 w-9 text-primary hover:bg-transparent hover:text-primary/80 disabled:opacity-50">
                   <StepForward className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-col gap-1 flex-1 min-w-[100px]">
-                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-muted-foreground">
+              <div className="flex flex-col gap-1 flex-1 min-w-[100px] px-2">
+                <div className="flex justify-between text-[10px] md:text-xs uppercase tracking-wider font-bold text-primary">
                   <span>Speed</span>
                   <span>{speed}%</span>
                 </div>
@@ -875,12 +874,12 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
               </div>
             </div>
 
-            <div className="flex-1 flex items-center gap-3 bg-secondary/30 p-2.5 md:p-3 rounded-xl border border-border/50 min-w-0">
-              <div className="h-7 w-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+            <div className="flex-1 flex items-center gap-3 neumorphic-inset p-2.5 md:p-3 rounded-xl border-0 min-w-0">
+              <div className="h-7 w-7 rounded-lg neumorphic-card flex items-center justify-center text-primary shrink-0 border-0">
                 <Info className="h-3.5 w-3.5" />
               </div>
-              <div className="font-mono text-xs md:text-sm text-muted-foreground truncate">
-                <span className="text-foreground font-bold mr-1.5">{">"}</span>
+              <div className="font-mono text-xs md:text-sm text-primary/80 truncate">
+                <span className="text-primary font-bold mr-1.5">{">"}</span>
                 {stepDescription}
               </div>
             </div>

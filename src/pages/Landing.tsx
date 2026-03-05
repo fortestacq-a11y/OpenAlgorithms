@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { LogoDropdown } from "@/components/LogoDropdown";
 import { ArrowRight, BarChart3, Search, Network } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
-import { LogoDropdown } from "@/components/LogoDropdown";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "next-themes";
 
@@ -19,7 +19,7 @@ export default function Landing() {
   const backgroundShape2Y = useTransform(scrollY, [0, 1000], [0, -200]);
 
   // Navbar animation logic
-  const navWidth = useSpring(useTransform(scrollY, [0, 50], ["100%", "95%"]), { stiffness: 400, damping: 30 });
+  const navWidth = useSpring(useTransform(scrollY, [0, 50], ["100%", "70%"]), { stiffness: 400, damping: 30 });
   const navTop = useSpring(useTransform(scrollY, [0, 50], ["0px", "16px"]), { stiffness: 400, damping: 30 });
   const navRadius = useSpring(useTransform(scrollY, [0, 50], ["0px", "50px"]), { stiffness: 400, damping: 30 });
   const navBorder = useTransform(scrollY, [0, 50], ["transparent", "rgba(255, 255, 255, 0.3)"]);
@@ -66,13 +66,11 @@ export default function Landing() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             {!user && (
-              <Link to="/auth" className="hidden md:block">
-                <Button size="sm" className="neumorphic-button text-primary font-semibold hover:bg-transparent">
-                  Sign In
-                </Button>
+              <Link to="/auth" className="hidden md:block text-primary/80 hover:text-primary transition-colors text-xs sm:text-base font-medium">
+                Sign In
               </Link>
             )}
-            <LogoDropdown />
+            {user && <LogoDropdown />}
           </div>
         </div>
       </motion.header>

@@ -1,5 +1,12 @@
+export interface SnippetData {
+    array?: number[];
+    target?: number;
+    visited?: number[];
+    graph?: Record<string, number[]> | number[][];
+}
+
 export const codeSnippets = {
-    "bubble-sort": (data: any) => ({
+    "bubble-sort": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 void bubbleSort(int arr[], int n) {
@@ -59,7 +66,7 @@ numbers = [${data.array ? data.array.join(", ") : "10, 20, 5, 3"}]
 bubble_sort(numbers)
 print("Bubble Sort:", numbers)`
     }),
-    "selection-sort": (data: any) => ({
+    "selection-sort": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 void selectionSort(int arr[], int n) {
@@ -122,7 +129,7 @@ numbers = [${data.array ? data.array.join(", ") : "10, 20, 5, 3"}]
 selection_sort(numbers)
 print("Selection Sort:", numbers)`
     }),
-    "insertion-sort": (data: any) => ({
+    "insertion-sort": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 void insertionSort(int arr[], int n) {
@@ -186,7 +193,7 @@ numbers = [${data.array ? data.array.join(", ") : "10, 20, 5, 3"}]
 insertion_sort(numbers)
 print("Insertion Sort:", numbers)`
     }),
-    "quick-sort": (data: any) => ({
+    "quick-sort": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 void swap(int* a, int* b) {
@@ -287,7 +294,7 @@ numbers = [${data.array ? data.array.join(", ") : "10, 20, 5, 3"}]
 result = quick_sort(numbers)
 print("Quick Sort:", result)`
     }),
-    "merge-sort": (data: any) => ({
+    "merge-sort": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 void merge(int arr[], int l, int m, int r) {
@@ -435,7 +442,7 @@ numbers = [${data.array ? data.array.join(", ") : "10, 20, 5, 3"}]
 result = merge_sort(numbers)
 print("Merge Sort:", result)`
     }),
-    "linear-search": (data: any) => ({
+    "linear-search": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 int search(int arr[], int n, int x) {
@@ -493,7 +500,7 @@ if(result == -1):
 else:
     print("Element is present at index", result)`
     }),
-    "binary-search": (data: any) => ({
+    "binary-search": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 int binarySearch(int arr[], int l, int r, int x) {
@@ -562,7 +569,7 @@ if result != -1:
 else:
     print("Element is not present in array")`
     }),
-    "bfs": (data: any) => ({
+    "bfs": (data: SnippetData) => ({
         c: `#include <stdio.h>
 
 // BFS implementation depends on Graph structure
@@ -607,7 +614,7 @@ queue = []
 bfs(visited, graph, 0)
 `
     }),
-    "dfs": (data: any) => ({
+    "dfs": (data: SnippetData) => ({
         c: `#include <stdio.h>
 // DFS implementation depends on Graph structure
 // Example graph traversal

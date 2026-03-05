@@ -4,7 +4,14 @@ import * as THREE from "three"
 
 export function LiquidEffectAnimation({ theme = "dark" }: { theme?: "light" | "dark" }) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const uniformsRef = useRef<any>(null)
+  const uniformsRef = useRef<{
+    u_time: { value: number };
+    u_resolution: { value: THREE.Vector2 };
+    u_mouse: { value: THREE.Vector2 };
+    u_color1: { value: THREE.Color };
+    u_color2: { value: THREE.Color };
+    u_color3: { value: THREE.Color };
+  } | null>(null)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -172,6 +179,6 @@ export function LiquidEffectAnimation({ theme = "dark" }: { theme?: "light" | "d
 
 declare global {
   interface Window {
-    __liquidApp?: any
+    __liquidApp?: unknown
   }
 }

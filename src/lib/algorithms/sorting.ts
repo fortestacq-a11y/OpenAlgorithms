@@ -98,24 +98,24 @@ function* partition(arr: number[], low: number, high: number): Generator<SortSte
 }
 
 export function* mergeSort(array: number[]): Generator<SortStep> {
-  let arr = [...array];
+  const arr = [...array];
   yield* mergeSortHelper(arr, 0, arr.length - 1);
   for (let i = 0; i < arr.length; i++) yield { type: "sorted", indices: [i], array: [...arr] };
 }
 
 function* mergeSortHelper(arr: number[], l: number, r: number): Generator<SortStep> {
   if (l >= r) return;
-  let m = l + Math.floor((r - l) / 2);
+  const m = l + Math.floor((r - l) / 2);
   yield* mergeSortHelper(arr, l, m);
   yield* mergeSortHelper(arr, m + 1, r);
   yield* merge(arr, l, m, r);
 }
 
 function* merge(arr: number[], l: number, m: number, r: number): Generator<SortStep> {
-  let n1 = m - l + 1;
-  let n2 = r - m;
-  let L = new Array(n1);
-  let R = new Array(n2);
+  const n1 = m - l + 1;
+  const n2 = r - m;
+  const L = new Array(n1);
+  const R = new Array(n2);
 
   for (let i = 0; i < n1; i++) L[i] = arr[l + i];
   for (let j = 0; j < n2; j++) R[j] = arr[m + 1 + j];

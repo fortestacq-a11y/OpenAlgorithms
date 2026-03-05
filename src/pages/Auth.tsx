@@ -55,7 +55,8 @@ export default function Auth() {
             await signInWithEmail(email, password);
             toast.success("Welcome back!");
             navigate(redirectTo);
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as { code?: string };
             const msg = error?.code === "auth/invalid-credential"
                 ? "Invalid email or password"
                 : error?.code === "auth/user-not-found"
@@ -84,7 +85,8 @@ export default function Auth() {
             await signUpWithEmail(email, password);
             toast.success("Account created! Check your email for verification.");
             navigate(redirectTo);
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as { code?: string };
             const msg = error?.code === "auth/email-already-in-use"
                 ? "An account with this email already exists"
                 : error?.code === "auth/weak-password"
@@ -102,7 +104,8 @@ export default function Auth() {
             await signInWithGoogle();
             toast.success("Signed in with Google!");
             navigate(redirectTo);
-        } catch (error: any) {
+        } catch (err) {
+            const error = err as { code?: string };
             if (error?.code !== "auth/popup-closed-by-user") {
                 toast.error("Google sign-in failed. Please try again.");
             }
@@ -119,7 +122,7 @@ export default function Auth() {
             await sendSignInLink(magicLinkEmail);
             setMagicLinkSent(true);
             toast.success("Magic link sent! Check your email.");
-        } catch (error: any) {
+        } catch {
             toast.error("Failed to send magic link. Please try again.");
         } finally {
             setIsLoading(false);

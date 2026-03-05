@@ -11,15 +11,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { algorithms, type Algorithm } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Code, Copy, Check } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import { codeSnippets } from "@/lib/codeSnippets";
 import { toast } from "sonner";
 
-const ML_CATEGORIES = [
-  "regression", "classification", "clustering",
-  "dimensionality-reduction", "association-rule",
-  "semi-supervised", "reinforcement-learning", "deep-learning"
-];
+
 
 const CATEGORY_LABELS: Record<string, string> = {
   regression: "Supervised · Regression",
@@ -675,7 +671,7 @@ interface GraphProps {
 }
 
 function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   // const [graph, setGraph] = useState(defaultGraph); // NOW USING PROP
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -890,7 +886,7 @@ function GraphVisualizer({ slug, graph, onReset }: GraphProps) {
   );
 }
 
-function CodeView({ slug, data }: { slug: string, data: any }) {
+function CodeView({ slug, data }: { slug: string, data: import('@/lib/codeSnippets').SnippetData }) {
   const snippetGenerator = codeSnippets[slug as keyof typeof codeSnippets];
   const snippets = snippetGenerator ? snippetGenerator(data) : null;
   const [copied, setCopied] = useState(false);

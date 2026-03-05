@@ -5,10 +5,12 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
 import { LogoDropdown } from "@/components/LogoDropdown";
 import { useAuth } from "@/hooks/use-auth";
+import { useTheme } from "next-themes";
 
 export default function Landing() {
   const { user } = useAuth();
   const { scrollY } = useScroll();
+  const { theme } = useTheme();
 
   // Parallax transforms
   const heroTextY = useTransform(scrollY, [0, 500], [0, 150]);
@@ -25,7 +27,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-x-hidden transition-colors duration-500">
-      <LiquidEffectAnimation theme="light" />
+      <LiquidEffectAnimation theme={theme as "light" | "dark"} />
 
       {/* Parallax Background Shapes */}
       <motion.div

@@ -8,24 +8,21 @@ import { useState, useEffect, useRef } from "react";
 import { sortingAlgorithms, searchingAlgorithms, graphAlgorithms } from "@/lib/algorithms";
 import { defaultGraph } from "@/lib/algorithms/graph";
 import { motion, AnimatePresence } from "framer-motion";
+import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
 import { algorithms, type Algorithm } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check } from "lucide-react";
 import { codeSnippets } from "@/lib/codeSnippets";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 
 
 const CATEGORY_LABELS: Record<string, string> = {
-  regression: "Supervised · Regression",
-  classification: "Supervised · Classification",
-  clustering: "Unsupervised · Clustering",
-  "dimensionality-reduction": "Unsupervised · Dimensionality Reduction",
-  "association-rule": "Unsupervised · Association Rule Learning",
-  "semi-supervised": "Semi-Supervised Learning",
-  "reinforcement-learning": "Reinforcement Learning",
-  "deep-learning": "Deep Learning",
+  sorting: "Sorting Algorithms",
+  searching: "Searching Algorithms",
+  graph: "Graph Algorithms",
 };
 
 
@@ -33,12 +30,7 @@ export default function AlgorithmPage() {
   const { slug } = useParams();
   const algorithm = algorithms.find(a => a.slug === slug);
 
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "light" | "dark") || "dark";
-    }
-    return "dark";
-  });
+  const { theme, setTheme } = useTheme();
 
   const [isCodeView, setIsCodeView] = useState(false);
 
@@ -48,12 +40,9 @@ export default function AlgorithmPage() {
   const [target, setTarget] = useState<number>(0);
   const [graph, setGraph] = useState(defaultGraph);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  const toggleTheme = () => {
+    setTheme(prev => prev === "light" ? "dark" : "light");
+  };
 
   // ── Dynamic SEO per algorithm page ──────────────────────────────────────
   useEffect(() => {
@@ -73,10 +62,6 @@ export default function AlgorithmPage() {
       document.title = "Open Algorithms";
     };
   }, [algorithm]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === "light" ? "dark" : "light");
-  };
 
   // Helper to reset data based on algorithm type
   const resetData = () => {
@@ -98,7 +83,6 @@ export default function AlgorithmPage() {
     } else if (algorithm.category === "graph") {
       setGraph(defaultGraph);
     }
-    // ML categories: no data to reset
   };
 
   // Reset on slug change
@@ -131,9 +115,10 @@ export default function AlgorithmPage() {
   };
 
   return (
-    <div className="flex h-screen w-full bg-background text-foreground overflow-hidden">
+    <div className="flex h-screen bg-background overflow-hidden relative">
+      <LiquidEffectAnimation theme={theme as "light" | "dark"} />
       <AppSidebar />
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative min-w-0 font-body">
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative min-w-0 font-body z-10">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none -z-10" />
 
@@ -232,7 +217,12 @@ export default function AlgorithmPage() {
                       onReset={resetData}
                     />
                   ) : (
-                    <MLInfoVisualizer algorithm={algorithm} />
+                    <div className="flex-1 flex items-center justify-center p-8 text-center">
+                      <div className="max-w-md space-y-4">
+                        <h2 className="text-2xl font-bold">Category Not Supported</h2>
+                        <p className="text-muted-foreground">The visualization for this category is currently under development.</p>
+                      </div>
+                    </div>
                   )}
                 </motion.div>
               )}
@@ -298,8 +288,7 @@ function SortingVisualizer({ slug, array, setArray, inputStr, setInputStr, onRes
   // Re-initialize generator if array changes and we are not playing? 
   // actually usually we want to stop if array changes externally
   useEffect(() => {
-    // If slug changes, we might want to reset, but parent handles that?
-    // Parent calls onReset when slug changes.
+    resetAnimationState();
   }, [slug]);
 
   const step = () => {
@@ -477,6 +466,10 @@ function SearchingVisualizer({ slug, array, setArray, inputStr, setInputStr, tar
     generatorRef.current = null;
     if (timerRef.current) clearInterval(timerRef.current);
   };
+
+  useEffect(() => {
+    resetAnimationState();
+  }, [slug]);
 
   const fullReset = () => {
     resetAnimationState();
@@ -953,135 +946,6 @@ function ScrollAreaCode({ code, language }: { code: string; language: string }) 
       <pre className="text-foreground/90">
         <code className={`language-${language}`}>{code}</code>
       </pre>
-    </div>
-  );
-}
-
-// ─── ML Info Visualizer ───────────────────────────────────────────────────────
-
-function MLInfoVisualizer({ algorithm }: { algorithm: Algorithm }) {
-  const categoryLabel = CATEGORY_LABELS[algorithm.category] ?? algorithm.category;
-
-  return (
-    <div className="h-full overflow-auto">
-      <div className="p-8 max-w-4xl mx-auto space-y-8">
-
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="space-y-3"
-        >
-          <Badge className="text-xs font-semibold tracking-widest uppercase bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15">
-            {categoryLabel}
-          </Badge>
-          <h2 className="text-3xl font-serif font-bold">{algorithm.name}</h2>
-          <p className="text-muted-foreground leading-relaxed text-base">{algorithm.description}</p>
-        </motion.div>
-
-        {/* Complexity Cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="grid grid-cols-2 gap-4"
-        >
-          <div className="bg-card border border-border/60 rounded-2xl p-5 flex items-center gap-4">
-            <div className="p-3 bg-primary/10 rounded-xl">
-              <Clock className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-[11px] uppercase tracking-widest font-bold text-muted-foreground">Time Complexity</p>
-              <p className="font-mono text-lg font-bold text-foreground">{algorithm.complexity.time}</p>
-            </div>
-          </div>
-          <div className="bg-card border border-border/60 rounded-2xl p-5 flex items-center gap-4">
-            <div className="p-3 bg-accent/10 rounded-xl">
-              <HardDrive className="h-5 w-5 text-accent" />
-            </div>
-            <div>
-              <p className="text-[11px] uppercase tracking-widest font-bold text-muted-foreground">Space Complexity</p>
-              <p className="font-mono text-lg font-bold text-foreground">{algorithm.complexity.space}</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Use Cases */}
-        {algorithm.useCases && algorithm.useCases.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-card border border-border/60 rounded-2xl p-6 space-y-4"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-yellow-500/10 rounded-lg">
-                <Lightbulb className="h-4 w-4 text-yellow-500" />
-              </div>
-              <h3 className="font-bold text-base">Common Use Cases</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {algorithm.useCases.map((uc) => (
-                <span
-                  key={uc}
-                  className="px-3 py-1.5 text-sm bg-secondary/60 border border-border/50 rounded-full text-foreground/80 font-medium"
-                >
-                  {uc}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Pros & Cons */}
-        {(algorithm.pros || algorithm.cons) && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          >
-            {algorithm.pros && (
-              <div className="bg-card border border-green-500/20 rounded-2xl p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-500/10 rounded-lg">
-                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  </div>
-                  <h3 className="font-bold text-base text-green-600 dark:text-green-400">Advantages</h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {algorithm.pros.map((pro) => (
-                    <li key={pro} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
-                      {pro}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {algorithm.cons && (
-              <div className="bg-card border border-red-500/20 rounded-2xl p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-500/10 rounded-lg">
-                    <XCircle className="h-4 w-4 text-red-500" />
-                  </div>
-                  <h3 className="font-bold text-base text-red-600 dark:text-red-400">Limitations</h3>
-                </div>
-                <ul className="space-y-2.5">
-                  {algorithm.cons.map((con) => (
-                    <li key={con} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <XCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
-                      {con}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </motion.div>
-        )}
-
-      </div>
     </div>
   );
 }

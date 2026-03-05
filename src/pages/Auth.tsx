@@ -22,10 +22,13 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
+import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
 
 export default function Auth() {
     const { user, loading, signInWithEmail, signUpWithEmail, signInWithGoogle, sendSignInLink } = useAuth();
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [isLoading, setIsLoading] = useState(false);
 
     // Read redirect from query params (set by ProtectedRoute)
@@ -139,6 +142,7 @@ export default function Auth() {
 
     return (
         <div className="min-h-screen flex flex-col bg-background relative overflow-hidden font-body">
+            <LiquidEffectAnimation theme={theme as "light" | "dark"} />
             {/* Background design */}
             <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 

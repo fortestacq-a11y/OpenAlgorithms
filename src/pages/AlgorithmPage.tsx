@@ -3,13 +3,13 @@ import { AppSidebar, MobileSidebarDrawer } from "@/components/AppSidebar";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
-import { Play, Pause, RotateCcw, StepForward, Info, Moon, Sun, CheckCircle2, XCircle, Lightbulb, Clock, HardDrive, Code2 } from "lucide-react";
+import { Play, Pause, RotateCcw, StepForward, Info, Moon, Sun, Code2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { sortingAlgorithms, searchingAlgorithms, graphAlgorithms } from "@/lib/algorithms";
 import { defaultGraph } from "@/lib/algorithms/graph";
 import { motion, AnimatePresence } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
-import { algorithms, type Algorithm } from "@/lib/data";
+import { algorithms } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check } from "lucide-react";
@@ -19,11 +19,7 @@ import { useTheme } from "next-themes";
 
 
 
-const CATEGORY_LABELS: Record<string, string> = {
-  sorting: "Sorting Algorithms",
-  searching: "Searching Algorithms",
-  graph: "Graph Algorithms",
-};
+
 
 
 export default function AlgorithmPage() {

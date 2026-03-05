@@ -21,6 +21,7 @@ export default function Landing() {
   const navTop = useSpring(useTransform(scrollY, [0, 50], ["0px", "16px"]), { stiffness: 400, damping: 30 });
   const navRadius = useSpring(useTransform(scrollY, [0, 50], ["0px", "50px"]), { stiffness: 400, damping: 30 });
   const navBorder = useTransform(scrollY, [0, 50], ["transparent", "rgba(255, 255, 255, 0.3)"]);
+  const howItWorksCardY = useTransform(scrollY, [0, 1500], [0, 100]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-x-hidden transition-colors duration-500">
@@ -188,7 +189,7 @@ export default function Landing() {
             </div>
             <div className="flex-1 relative w-full mt-12 md:mt-0">
               <motion.div
-                style={{ y: useTransform(scrollY, [0, 1500], [0, 100]) }}
+                style={{ y: howItWorksCardY }}
                 className="neumorphic-card p-8 w-full max-w-md mx-auto aspect-square flex flex-col justify-between"
               >
                 <div className="space-y-4">

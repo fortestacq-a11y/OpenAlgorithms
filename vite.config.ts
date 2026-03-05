@@ -11,4 +11,32 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 700,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core
+          "vendor-react": ["react", "react-dom"],
+          // Routing
+          "vendor-router": ["react-router"],
+          // Animation
+          "vendor-framer": ["framer-motion"],
+          // Firebase
+          "vendor-firebase": ["firebase/app", "firebase/auth"],
+          // Three.js (heavy 3D lib)
+          "vendor-three": ["three", "@react-three/fiber", "@react-three/drei"],
+          // Radix UI components
+          "vendor-radix": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-collapsible",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-slider",
+            "@radix-ui/react-scroll-area",
+          ],
+        },
+      },
+    },
+  },
 });

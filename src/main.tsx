@@ -1,15 +1,17 @@
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/AuthContext.tsx";
 import { ThemeProvider } from "@/components/theme-provider";
-import { StrictMode, useEffect } from "react";
+import { StrictMode, useEffect, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
-import Landing from "./pages/Landing.tsx";
-import AlgorithmPage from "./pages/AlgorithmPage.tsx";
-import Auth from "./pages/Auth.tsx";
-import NotFound from "./pages/NotFound.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+
+// Lazy-load pages for code splitting
+const Landing = lazy(() => import("./pages/Landing.tsx"));
+const AlgorithmPage = lazy(() => import("./pages/AlgorithmPage.tsx"));
+const Auth = lazy(() => import("./pages/Auth.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 function RouteSyncer() {
   const location = useLocation();
@@ -40,12 +42,18 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <BrowserRouter>
           <RouteSyncer />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/algorithms/:slug" element={<ProtectedRoute><AlgorithmPage /></ProtectedRoute>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-background">
+              <div className="h-8 w-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          }>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/algorithms/:slug" element={<ProtectedRoute><AlgorithmPage /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
         <Toaster />
       </AuthProvider>

@@ -4,11 +4,9 @@ import { LogoDropdown } from "@/components/LogoDropdown";
 import { ArrowRight, BarChart3, Search, Network } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
-import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "next-themes";
 
 export default function Landing() {
-  const { user } = useAuth();
   const { scrollY } = useScroll();
   const { theme } = useTheme();
 
@@ -65,12 +63,7 @@ export default function Landing() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            {!user && (
-              <Link to="/auth" className="hidden md:block text-primary/80 hover:text-primary transition-colors text-xs sm:text-base font-medium">
-                Sign In
-              </Link>
-            )}
-            {user && <LogoDropdown />}
+            <LogoDropdown />
           </div>
         </div>
       </motion.header>

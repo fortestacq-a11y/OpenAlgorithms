@@ -22,8 +22,7 @@ export default defineConfig({
           "vendor-router": ["react-router"],
           // Animation
           "vendor-framer": ["framer-motion"],
-          // Firebase
-          "vendor-firebase": ["firebase/app", "firebase/auth"],
+
           // Three.js (heavy 3D lib)
           "vendor-three": ["three", "@react-three/fiber", "@react-three/drei"],
           // Radix UI components

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { LogoDropdown } from "@/components/LogoDropdown";
 import { ArrowRight, BarChart3, Search, Network } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
@@ -11,6 +11,15 @@ export default function Landing() {
   const { scrollY } = useScroll();
   const { theme } = useTheme();
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleVisualizerClick = () => {
+    if (!isAuthenticated) {
+      navigate("/auth");
+    } else {
+      navigate("/algorithms/bubble-sort");
+    }
+  };
 
   // Parallax transforms
   const heroTextY = useTransform(scrollY, [0, 500], [0, 150]);
@@ -115,11 +124,13 @@ export default function Landing() {
             transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
           >
-            <Link to="/algorithms/bubble-sort">
-              <Button size="lg" className="h-14 px-8 text-lg btn-primary-slate">
-                Launch Visualizer <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="h-14 px-8 text-lg btn-primary-slate cursor-pointer"
+              onClick={handleVisualizerClick}
+            >
+              {isAuthenticated ? "Launch Visualizer" : "Get Started"} <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
           </motion.div>
         </section>
 
@@ -230,11 +241,13 @@ export default function Landing() {
               Join the elite tier of developers leveraging Open Algorithms to dissect, understand, and dominate intricate computational paradigms.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Link to="/algorithms/bubble-sort">
-                <Button size="lg" className="h-14 px-10 text-lg btn-primary-slate">
-                  Initialize System
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                className="h-14 px-10 text-lg btn-primary-slate cursor-pointer"
+                onClick={handleVisualizerClick}
+              >
+                {isAuthenticated ? "Initialize System" : "Sign In to Start"}
+              </Button>
             </div>
           </div>
         </motion.section>

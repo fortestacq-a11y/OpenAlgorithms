@@ -5,10 +5,12 @@ import { ArrowRight, BarChart3, Search, Network } from "lucide-react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidEffectAnimation } from "@/components/ui/liquid-effect-animation";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Landing() {
   const { scrollY } = useScroll();
   const { theme } = useTheme();
+  const { isAuthenticated, user } = useAuth();
 
   // Parallax transforms
   const heroTextY = useTransform(scrollY, [0, 500], [0, 150]);
@@ -63,6 +65,22 @@ export default function Landing() {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            {!isAuthenticated && (
+              <Link to="/auth">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="neumorphic-button border-0 hover:bg-transparent rounded-full px-4 text-primary font-semibold text-xs sm:text-sm cursor-pointer"
+                >
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            {isAuthenticated && user && (
+              <span className="hidden sm:block text-xs font-medium text-muted-foreground">
+                Hi, {user.displayName?.split(" ")[0] ?? "there"} 👋
+              </span>
+            )}
             <LogoDropdown />
           </div>
         </div>

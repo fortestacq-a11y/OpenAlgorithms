@@ -1,11 +1,10 @@
 # robots.txt for https://openalgorithms.vercel.app/
-# Generated: 2026-02-26
+# Updated: 2026-03-06
 
 User-agent: *
 Allow: /
 
-# Disallow private / utility paths
-Disallow: /api/
-Disallow: /_convex/
+# Disallow auth page from indexing (no SEO value)
+Disallow: /auth
 
 Sitemap: https://openalgorithms.vercel.app/sitemap.xml

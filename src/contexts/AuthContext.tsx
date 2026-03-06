@@ -4,7 +4,8 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
-    signInWithPopup,
+    signInWithRedirect,
+    getRedirectResult,
     signOut as firebaseSignOut,
     updateProfile,
 } from "firebase/auth";
@@ -27,6 +28,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // Handle redirect result on page load (after Google redirect comes back)
+        getRedirectResult(auth)
+            .then((result) => {
+                if (result?.user) {
+                    setUser(result.user);
+                }
+            })
+            .catch((error) => {
+                console.error("Redirect result error:", error);
+            });
+
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser);
             setIsLoading(false);
@@ -45,8 +57,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    // Use redirect instead of popup — works on all browsers and environments
     const signInWithGoogle = async () => {
-        await signInWithPopup(auth, googleProvider);
+        await signInWithRedirect(auth, googleProvider);
     };
 
     const signOut = async () => {

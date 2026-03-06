@@ -82,12 +82,18 @@ export default function Auth() {
     const handleGoogle = async () => {
         setLoading(true);
         try {
+            // signInWithGoogle uses signInWithRedirect — page will navigate to Google
+            // and then come back. We just trigger it; AuthContext handles the result.
+            toast("Redirecting to Google...");
             await signInWithGoogle();
-            toast.success("Signed in with Google!");
-            navigate("/");
-        } catch {
-            toast.error("Google sign-in failed. Please try again.");
-        } finally {
+            // Code below won't execute because the page redirects away
+        } catch (err: unknown) {
+            const code = (err as { code?: string })?.code;
+            if (code === "auth/unauthorized-domain") {
+                toast.error("This domain is not authorized in Firebase. Add it to authorized domains.");
+            } else {
+                toast.error("Google sign-in failed. Please try again.");
+            }
             setLoading(false);
         }
     };
@@ -135,8 +141,8 @@ export default function Auth() {
                                 key={t}
                                 onClick={() => setTab(t)}
                                 className={`flex-1 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer ${tab === t
-                                        ? "btn-primary-slate text-primary-foreground shadow-sm"
-                                        : "text-muted-foreground hover:text-primary"
+                                    ? "btn-primary-slate text-primary-foreground shadow-sm"
+                                    : "text-muted-foreground hover:text-primary"
                                     }`}
                             >
                                 {t === "signin" ? "Sign In" : "Sign Up"}

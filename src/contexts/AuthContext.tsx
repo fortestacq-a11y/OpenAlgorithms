@@ -4,6 +4,7 @@ import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
+    signInWithPopup,
     signInWithRedirect,
     getRedirectResult,
     signOut as firebaseSignOut,
@@ -25,25 +26,36 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
+    // Start as true — we won't show the app until we've checked both
+    // the redirect result AND the auth state
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Handle redirect result on page load (after Google redirect comes back)
+        let authUnsubscribe: (() => void) | null = null;
+
+        // Step 1: Check if we're coming back from a Google redirect
         getRedirectResult(auth)
             .then((result) => {
                 if (result?.user) {
+                    // User just signed in via Google redirect — set them immediately
                     setUser(result.user);
                 }
             })
-            .catch((error) => {
-                console.error("Redirect result error:", error);
+            .catch((err) => {
+                console.error("getRedirectResult error:", err);
+            })
+            .finally(() => {
+                // Step 2: After redirect result is resolved (or failed),
+                // NOW set up the auth state listener and finish loading
+                authUnsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+                    setUser(firebaseUser);
+                    setIsLoading(false);
+                });
             });
 
-        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-            setUser(firebaseUser);
-            setIsLoading(false);
-        });
-        return () => unsubscribe();
+        return () => {
+            if (authUnsubscribe) authUnsubscribe();
+        };
     }, []);
 
     const signIn = async (email: string, password: string) => {
@@ -57,9 +69,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    // Use redirect instead of popup — works on all browsers and environments
     const signInWithGoogle = async () => {
-        await signInWithRedirect(auth, googleProvider);
+        try {
+            // Try popup first — instant sign-in, no page redirect
+            await signInWithPopup(auth, googleProvider);
+        } catch (err: unknown) {
+            const code = (err as { code?: string })?.code;
+            // If popup was blocked or closed, fall back to redirect
+            if (
+                code === "auth/popup-blocked" ||
+                code === "auth/popup-closed-by-user" ||
+                code === "auth/cancelled-popup-request"
+            ) {
+                await signInWithRedirect(auth, googleProvider);
+            } else {
+                throw err;
+            }
+        }
     };
 
     const signOut = async () => {

@@ -82,15 +82,15 @@ export default function Auth() {
     const handleGoogle = async () => {
         setLoading(true);
         try {
-            // signInWithGoogle uses signInWithRedirect — page will navigate to Google
-            // and then come back. We just trigger it; AuthContext handles the result.
-            toast("Redirecting to Google...");
             await signInWithGoogle();
-            // Code below won't execute because the page redirects away
+            toast.success("Signed in with Google!");
+            navigate("/");
         } catch (err: unknown) {
             const code = (err as { code?: string })?.code;
             if (code === "auth/unauthorized-domain") {
-                toast.error("This domain is not authorized in Firebase. Add it to authorized domains.");
+                toast.error("Domain not authorized. Add this domain to Firebase authorized domains.");
+            } else if (code === "auth/popup-closed-by-user") {
+                toast.error("Sign-in cancelled.");
             } else {
                 toast.error("Google sign-in failed. Please try again.");
             }
